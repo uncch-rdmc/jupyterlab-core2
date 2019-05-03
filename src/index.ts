@@ -18,6 +18,8 @@ import {
   Widget
 } from '@phosphor/widgets';
 
+import { PageConfig } from '@jupyterlab/coreutils';
+
 import '../style/index.css';
 
 class XkcdWidget extends Widget {
@@ -59,6 +61,25 @@ class XkcdWidget extends Widget {
 
 function activate(app: JupyterLab, palette: ICommandPalette, restorer: ILayoutRestorer){
   console.log('JupyterLab CORE2 extension is activated');
+
+  let rightAreaOfTopPanel = new Widget()
+	rightAreaOfTopPanel.id = 'jp-topPanel-rightArea';
+	
+	//add logout button
+	let logoutBtn = document.createElement('button');
+	logoutBtn.id = "submit";
+	logoutBtn.className = "btn";
+	logoutBtn.innerHTML = "Submit";
+	logoutBtn.addEventListener('click', function () {
+    window.location.assign(PageConfig.getBaseUrl() + "logout");
+    console.log('Emit POST request.');
+	});
+	
+	rightAreaOfTopPanel.node.appendChild(logoutBtn);
+  app.shell.addToTopArea(rightAreaOfTopPanel);
+  
+
+
 
   let widget: XkcdWidget;
 
@@ -111,7 +132,7 @@ function activate(app: JupyterLab, palette: ICommandPalette, restorer: ILayoutRe
  * Initialization data for the core2 extension.
  */
 const extension: JupyterLabPlugin<void> = {
-  id: 'core2',
+  id: '@andreyodum/core2',
   autoStart: true,
   requires: [ICommandPalette, ILayoutRestorer],
   activate: activate
