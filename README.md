@@ -10,7 +10,7 @@ A suppport extension for CORE2 project
 ## Installation
 
 ```bash
-jupyter labextension install core2
+jupyter labextension install @andreyodum/core2
 ```
 
 ## Development
