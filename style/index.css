@@ -74,14 +74,18 @@
 }
 
 
+.p-Widget.p-Panel.p-BoxPanel#jp-main-content-panel{
+    top: 50px !important;
+    margin-bottom: -20px !important;
+}
+
+
 #jp-top-panel{
     height:50px !important;
 
 }
 
-#jp-main-content-panel{
-    top: 50px !important;
-}
+
 
 #jp-MainMenu ul{
     margin-top:10px;

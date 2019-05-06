@@ -1,6 +1,6 @@
 # core2
 
-Odum Core2 Project Support Extension.
+A suppport extension for CORE2 project
 
 
 ## Prerequisites
@@ -10,7 +10,7 @@ Odum Core2 Project Support Extension.
 ## Installation
 
 ```bash
-jupyter labextension install core2
+jupyter labextension install @andreyodum/core2
 ```
 
 ## Development
