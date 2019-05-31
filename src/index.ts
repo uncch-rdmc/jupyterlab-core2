@@ -5,8 +5,6 @@ import {
 
 import { ServerConnection } from '@jupyterlab/services';
 import { URLExt } from '@jupyterlab/coreutils';
-import { PathExt } from '@jupyterlab/coreutils';
-
 import { Dialog, showDialog } from '@jupyterlab/apputils';
 
 import {
@@ -69,9 +67,6 @@ function activate(app: JupyterLab){
       }
     });
 
-    let directpath = PathExt.dirname("");
-    console.log(directpath);
-
 
     httpGitRequest('/git/add', 'POST', {
       add_all: true,
@@ -84,14 +79,11 @@ function activate(app: JupyterLab){
       top_repo_path: "./"
     });
 
+    httpGitRequest('/git/push', 'POST', {
+      current_path: "./"
+    });
 
-
-    //commands.execute('git add .');
-    //commands.execute('git commit -m "Submitted for Review"');
-    //commands.execute('git push origin');
-    
-    //window.location.assign(PageConfig.getBaseUrl() + "logout");
-    console.log('Sent to Git4');
+    console.log('Sent to GitLab');
 	});
 	
 	rightAreaOfTopPanel.node.appendChild(submitBtn);
