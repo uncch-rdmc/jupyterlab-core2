@@ -1,6 +1,6 @@
 {
   "name": "@andreyodum/core2",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "A suppport extension for CORE2 project. https://github.com/OdumInstitute/",
   "keywords": [
     "jupyter",

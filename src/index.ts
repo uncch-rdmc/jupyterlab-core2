@@ -2,17 +2,42 @@ import {
   JupyterLab, JupyterLabPlugin
 } from '@jupyterlab/application';
 
+
+import { ServerConnection } from '@jupyterlab/services';
+import { URLExt } from '@jupyterlab/coreutils';
+import { PathExt } from '@jupyterlab/coreutils';
+
+import { Dialog, showDialog } from '@jupyterlab/apputils';
+
 import {
   Widget
 } from '@phosphor/widgets';
 
-import { PageConfig } from '@jupyterlab/coreutils';
 
 import '../style/index.css';
 
 
 
+
+/** Makes a HTTP request, sending a git command to the backend */
+function httpGitRequest(
+  url: string,
+  method: string,
+  request: Object
+): Promise<Response> {
+  let fullRequest = {
+    method: method,
+    body: JSON.stringify(request)
+  };
+
+  let setting = ServerConnection.makeSettings();
+  let fullUrl = URLExt.join(setting.baseUrl, url);
+  return ServerConnection.makeRequest(fullUrl, fullRequest, setting);
+}
+
+
 function activate(app: JupyterLab){
+  
   console.log('JupyterLab CORE2 extension is activated');
 
   let rightAreaOfTopPanel = new Widget()
@@ -25,8 +50,48 @@ function activate(app: JupyterLab){
 	submitBtn.innerHTML = "Submit";
 	submitBtn.addEventListener('click', function () {
 
-    window.location.assign(PageConfig.getBaseUrl() + "logout");
-    console.log('Emit POST request.');
+
+    showDialog({
+      title: 'You are about to submit files',
+      body:
+        'Your files will be uploaded to our servers' +
+        'Please make sure that the files don\'t have any sensitive data.' +
+        'Do you want to continue?',
+      buttons: [
+        Dialog.cancelButton({ label: 'CANCEL' }),
+        Dialog.warnButton({ label: 'PROCEED' })
+      ]
+    }).then(result => {
+      if (result.button.accept) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+
+    let directpath = PathExt.dirname("");
+    console.log(directpath);
+
+
+    httpGitRequest('/git/add', 'POST', {
+      add_all: true,
+      filename: "./*",
+      top_repo_path: "./"
+    });
+
+    httpGitRequest('/git/commit', 'POST', {
+      commit_msg: "User CORE2 Commit",
+      top_repo_path: "./"
+    });
+
+
+
+    //commands.execute('git add .');
+    //commands.execute('git commit -m "Submitted for Review"');
+    //commands.execute('git push origin');
+    
+    //window.location.assign(PageConfig.getBaseUrl() + "logout");
+    console.log('Sent to Git4');
 	});
 	
 	rightAreaOfTopPanel.node.appendChild(submitBtn);
