@@ -61,29 +61,26 @@ function activate(app: JupyterLab){
       ]
     }).then(result => {
       if (result.button.accept) {
+        httpGitRequest('/git/add', 'POST', {
+          add_all: true,
+          filename: "./*",
+          top_repo_path: "./"
+        });
+    
+        httpGitRequest('/git/commit', 'POST', {
+          commit_msg: "User CORE2 Commit",
+          top_repo_path: "./"
+        });
+    
+        httpGitRequest('/git/push', 'POST', {
+          current_path: "./"
+        });
+        console.log('Sent to GitLab');
         return true;
       } else {
         return false;
       }
     });
-
-
-    httpGitRequest('/git/add', 'POST', {
-      add_all: true,
-      filename: "./*",
-      top_repo_path: "./"
-    });
-
-    httpGitRequest('/git/commit', 'POST', {
-      commit_msg: "User CORE2 Commit",
-      top_repo_path: "./"
-    });
-
-    httpGitRequest('/git/push', 'POST', {
-      current_path: "./"
-    });
-
-    console.log('Sent to GitLab');
 	});
 	
 	rightAreaOfTopPanel.node.appendChild(submitBtn);
